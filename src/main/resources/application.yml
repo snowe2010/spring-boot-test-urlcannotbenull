@@ -1,0 +1,89 @@
+server:
+  port: 9008
+
+jwt:
+  auth:
+    header: X-AUTH-TOKEN
+    expiration_minutes: ${JWT_AUTH_EXP_MINS:30}
+  refresh:
+    header: X-REFRESH-TOKEN
+    expiration_minutes: ${JWT_REFRESH_EXP_MINS:720}
+  reset:
+    expiration_minutes: ${JWT_RESET_EXP_MINS:120}
+  invite:
+    expiration_minutes: ${JWT_INVITE_EXP_MINS:2880}
+  blacklist:
+    cleanup:
+      delay: ${TOKEN_BLACKLIST_CLEANUP_FREQUENCY:30}
+  apiKey:
+    cacheCleanup:
+      cron: ${API_KEY_CLEANUP_CRON:0 0 7 * * *}
+  secret: ${JWT_SIGNING_KEY}
+  issuer: ${JWT_ISSUER:iam_local}
+
+localtest:
+  enabled: ${LOCAL_TOKEN:false}
+
+spring:
+  rabbitmq:
+    host: ${RABBIT_URL:localhost}
+    port: ${RABBIT_PORT:5672}
+    username: ${RABBIT_USERNAME:guest}
+    password: ${RABBIT_PASSWORD:guest}
+    ssl:
+      enabled: ${RABBIT_SSL_ENABLED:false}
+
+  jpa:
+    database: POSTGRESQL
+    databaseDriver: org.postgresql.Driver
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+    database-platform: com.datapublica.pg.dialect.PostgreSQL94JsonDialect
+    hibernate:
+      database-dialect: com.datapublica.pg.dialect.PostgreSQL94JsonDialect
+      # allowed values true|false
+      format-sql: false
+      # allowed values true|false
+      show-sql: false
+      ddl-auto: validate
+
+  iamDatasource:
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://${IAM_USER_DB_HOST:localhost}:${IAM_USER_DB_PORT:5432}/${IAM_USER_DB_NAME:iam}
+    username: ${IAM_USER_DB_USER:postgres}
+    password: ${IAM_USER_DB_PASSWORD:}
+    max-active: ${IAM_USER_DB_MAX_ACTIVE:5}
+    min-idle: ${IAM_USER_DB_MIN_IDLE:1}
+    max-idle: ${IAM_USER_DB_MAX_IDLE:5}
+    max-wait: ${IAM_USER_DB_MAX_WAIT:60000}
+    initial-size: ${IAM_USER_DB_INITIAL_SIZE:2}
+    remove-abandoned: ${IAM_USER_DB_REMOVE_ABANDONED:true}
+    test-while-idle: ${IAM_USER_DB_TEST_WHILE_IDLE:true}
+    validationInterval: ${IAM_USER_DB_VALIDATION_INTERNAL:60000}
+    validationQuery: ${IAM_USER_DB_VALIDATION_QUERY:SELECT 1}
+
+
+  axonDatasource:
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://${EVENTSTORE_DB_HOST:localhost}:${EVENTSTORE_DB_PORT:5432}/${EVENTSTORE_DB_NAME:eventstore}
+    username: ${EVENTSTORE_DB_USER:postgres}
+    password: ${EVENTSTORE_DB_PASSWORD:}
+    max-active: ${EVENTSTORE_DB_MAX_ACTIVE:5}
+    min-idle: ${EVENTSTORE_DB_MIN_IDLE:1}
+    max-idle: ${EVENTSTORE_DB_MAX_IDLE:5}
+    max-wait: ${EVENTSTORE_DB_MAX_WAIT:60000}
+    initial-size: ${EVENTSTORE_DB_INITIAL_SIZE:2}
+    remove-abandoned: ${EVENTSTORE_DB_REMOVE_ABANDONED:true}
+    test-while-idle: ${EVENTSTORE_DB_TEST_WHILE_IDLE:true}
+    validationInterval: ${EVENTSTORE_DB_VALIDATION_INTERNAL:60000}
+    validationQuery: ${EVENTSTORE_DB_VALIDATION_QUERY:SELECT 1}
+
+security:
+  ignoreUris: /authorization/**,/idSiteCallback/**,/localToken,/applicants,/accessToken,/tokenLogin,/tokenLogout,/apiLogin,/factoryWorkers,/requestPasswordReset,/resetPasswordTokenVerification,/resetUserPassword
+
+
+logging:
+  level:
+    root: WARN
+    org.springframework: INFO

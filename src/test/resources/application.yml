@@ -1,0 +1,37 @@
+logging:
+  level:
+    root: INFO
+    org.springframework.security: INFO
+
+jwt:
+  secret: localTestSecret
+
+spring:
+
+  jpa:
+    database: POSTGRESQL
+    databaseDriver: org.postgresql.Driver
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+    hibernate:
+      database-dialect: com.datapublica.pg.dialect.PostgreSQL94JsonDialect
+      format-sql: false
+      show-sql: false
+      ddl-auto: update
+    database-platform: com.datapublica.pg.dialect.PostgreSQL94JsonDialect
+
+  datasource:
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://${HOST_URL:localhost}:5432/aggregate
+    username: postgres
+    password:
+    dbcp:
+      max-active: 5
+      initial-size: 3
+      remove-abandoned: true
+      validationInterval: 30000
+
+security:
+  ignoreUris: /authorization/**,/idSiteCallback/**,/localToken,/applicants,/accessToken,/tokenLogin,/tokenLogout,/apiLogin,/factoryWorkers,/requestPasswordReset,/resetPasswordTokenVerification,/resetUserPassword
+
+

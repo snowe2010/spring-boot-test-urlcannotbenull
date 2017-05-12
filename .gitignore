@@ -1,0 +1,27 @@
+target
+out
+.DS_Store
+node_modules
+log
+*.log
+
+# IDE #
+#######
+.classpath
+.project
+.metadata
+bin/
+*.tmp
+*.bak
+*.swp
+local.properties
+.settings/
+tmp/
+.springBeans
+.target
+.buildPath
+.factorypath
+.cproject
+.externalToolBuilders/
+*.iml
+.idea/
